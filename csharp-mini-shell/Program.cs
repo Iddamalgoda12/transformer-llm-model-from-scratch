@@ -23,6 +23,22 @@ while (true)
         Environment.Exit(exitcode);
 
     }
+    
+
+    if(command == "echo")
+    {
+        if(parts.Length>1)
+        {
+           Console.WriteLine(string.Join(' ', parts[1..]));
+        }
+        else
+        {
+            Console.WriteLine();
+
+        }
+        continue;
+
+    }
     Console.WriteLine($"{input}: command not found");
 }
 
