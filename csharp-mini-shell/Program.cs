@@ -38,6 +38,7 @@ while (true)
         continue;
 
     }
+    
     //added type command to find out buitin comands
     if(command == "type")
     {
@@ -47,16 +48,39 @@ while (true)
             {
                 Console.WriteLine($"{parts[1]}: is a shell builtin");
             }
-
+            
             else
             {
-                Console.WriteLine($"{string.Join(' ', parts[1..])}: command not found");
+                string? pathvar = Environment.GetEnvironmentVariable("PATH");
+                if(pathvar!=null)
+                {
+                    bool found = false;
+                    string[] paths = pathvar.Split(';');
+                    foreach(string dir in paths)
+                    {
+                        string fullpath = Path.Combine(dir, parts[1]);
 
+                        if(File.Exists(fullpath))
+                        {
+                            Console.WriteLine($"{parts[1]} is {fullpath}");
+                            found = true;
+                            break;
+                        }
+
+                    }
+                    if(!found)
+                    {
+                        Console.WriteLine($"{parts[1]} not found");
+                    }
+                }
             }
+
         }
             continue;
     }
 }
+
+
 
 
 
