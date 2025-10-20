@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 while (true)
 {
@@ -6,7 +7,8 @@ while (true)
 
     //checks the input for null also,removes spaces
     String? input = Console.ReadLine()?.Trim();
-
+    
+    //skips if command is null
     if (string.IsNullOrEmpty(input))
     {
         continue;
@@ -78,6 +80,59 @@ while (true)
         }
             continue;
     }
+    try
+    {
+        string? pathvar = Environment.GetEnvironmentVariable("PATH");
+        string[] paths = pathvar?.Split(";") ?? Array.Empty<string>();
+        string[] exts = { " ", ".exe", ".bat", ".cmd" };
+        string? fullpath = null;
+
+        foreach(string dir in paths)
+        {
+            foreach(var ext in exts)
+            {
+                string possiblepath = Path.Combine(dir, parts[0] + ext);
+                if(File.Exists(possiblepath))
+                {
+                    fullpath = possiblepath;
+                    break;
+                }
+
+            }
+            if (fullpath != null) break;
+
+        }
+        if(fullpath==null)
+        {
+            Console.WriteLine($"{parts[0]}:command not found");
+            continue;
+        }
+
+        ProcessStartInfo psi = new ProcessStartInfo
+        {
+            FileName = fullpath,
+            Arguments = string.Join(' ', parts[1..]),
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
+        };
+
+        Process proc = Process.Start(psi)!;
+        string output = proc.StandardOutput.ReadToEnd();
+        string error = proc.StandardError.ReadToEnd();
+        proc.WaitForExit();
+
+        if (!string.IsNullOrEmpty(output))
+            Console.Write(output);
+        if (!string.IsNullOrEmpty(error))
+            Console.Write(error);
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error: {ex.Message}");
+    }
+
 }
 
 
