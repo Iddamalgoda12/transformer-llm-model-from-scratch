@@ -14,7 +14,7 @@ while (true)
         continue;
     }
 
-    //devids input in to parts
+    //devides input in to parts
     string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
     string command = parts[0].ToLower();
 
@@ -44,6 +44,33 @@ while (true)
     if (command == "pwd")
     {
         Console.WriteLine(Environment.CurrentDirectory);
+        continue;
+    }
+    //cd command
+    if(command == "cd")
+    {
+        if(parts.Length<2)
+        {
+            continue;
+        }
+
+        string targetDir = parts[1];
+        try
+        {
+           if(Directory.Exists(targetDir))
+            {
+                Environment.CurrentDirectory = targetDir;
+            }
+           else
+            {
+                Console.WriteLine($"{targetDir}: No such file or directory");
+            }
+
+        }
+        catch
+        {
+            Console.WriteLine($"cd: {targetDir}: No such file or directory");
+        }
         continue;
     }
 
