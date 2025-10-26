@@ -40,9 +40,15 @@ while (true)
         continue;
 
     }
-    
+    //pwd command
+    if (command == "pwd")
+    {
+        Console.WriteLine(Environment.CurrentDirectory);
+        continue;
+    }
+
     //added type command to find out buitin comands
-    if(command == "type")
+    if (command == "type")
     {
         if (parts.Length > 1)
         {
@@ -61,7 +67,7 @@ while (true)
                     foreach(string dir in paths)
                     {
                         string fullpath = Path.Combine(dir, parts[1]);
-
+    //prints the full path of the file.
                         if(File.Exists(fullpath))
                         {
                             Console.WriteLine($"{parts[1]} is {fullpath}");
@@ -80,6 +86,7 @@ while (true)
         }
             continue;
     }
+    //try command. runs files that are on my pc.
     try
     {
         string? pathvar = Environment.GetEnvironmentVariable("PATH");
