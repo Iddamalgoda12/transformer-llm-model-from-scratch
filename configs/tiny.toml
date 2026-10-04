@@ -1,0 +1,16 @@
+[model]
+vocab_size = 2048
+block_size = 128
+n_embd = 128
+n_head = 4
+n_layer = 4
+dropout = 0.1
+
+[training]
+batch_size = 32
+learning_rate = 0.0003
+weight_decay = 0.1
+steps = 500
+eval_interval = 100
+eval_batches = 10
+seed = 1337
